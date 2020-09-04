@@ -32,8 +32,9 @@ body {
 .long-quote {
   font-size: 2rem;
 }
-.fa-quote-left {
-  font-size: 4rem;
+.fa-quote-left,
+.fa-quote-right {
+  font-size: 3.5rem;
 }
 .quote-author {
   margin-top: 15px;
