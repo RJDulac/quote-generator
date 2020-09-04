@@ -3,11 +3,26 @@ const quoteContainer = document.getElementById("quote-container"),
   quoteText = document.getElementById("quote"),
   authorText = document.getElementById("author"),
   twitterButton = document.getElementById("twitter"),
-  newQuoteButton = document.getElementById("new-quote");
+  newQuoteButton = document.getElementById("new-quote"),
+  loader = document.getElementById("loader");
 
+//show loading
+const loading = () => {
+  loader.hidden = false;
+  quoteContainer.hidden = true;
+};
+
+//hide loading
+const complete = () => {
+  if (!loading.hidden) {
+    quoteContainer.hidden = false;
+    loader.hidden = true;
+  }
+};
 //Get quote from API
 
 const getQuote = async () => {
+  loading();
   //proxy for cors issue
   const proxyUrl = "https://cors-anywhere.herokuapp.com/";
   const apiUrl =
@@ -28,6 +43,8 @@ const getQuote = async () => {
       quoteText.classList.remove("long-quote");
     }
     quoteText.innerText = data.quoteText;
+    //stop loader. Show quote
+    complete();
   } catch (error) {
     //api is using special characters that causes an error
     getQuote();
