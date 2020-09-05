@@ -6,23 +6,19 @@ const quoteContainer = document.getElementById("quote-container"),
   newQuoteButton = document.getElementById("new-quote"),
   loader = document.getElementById("loader");
 
-//show loading
-const loading = () => {
+const showLoadingSpinner = () => {
   loader.hidden = false;
   quoteContainer.hidden = true;
 };
 
-//hide loading
-const complete = () => {
-  if (!loading.hidden) {
+const removeLoadingSpinner = () => {
+  if (!loader.hidden) {
     quoteContainer.hidden = false;
     loader.hidden = true;
   }
 };
-//Get quote from API
-
 const getQuote = async () => {
-  loading();
+  showLoadingSpinner();
   //proxy for cors issue
   const proxyUrl = "https://cors-anywhere.herokuapp.com/";
   const apiUrl =
@@ -43,11 +39,16 @@ const getQuote = async () => {
       quoteText.classList.remove("long-quote");
     }
     quoteText.innerText = data.quoteText;
-    //stop loader. Show quote
-    complete();
+
+    removeLoadingSpinner();
   } catch (error) {
     //api is using special characters that causes an error
-    getQuote();
+    if (error instanceof SyntaxError) {
+      getQuote();
+      console.log(error);
+    } else {
+      console.log("Something went wrong");
+    }
   }
 };
 
